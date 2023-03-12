@@ -131,3 +131,19 @@ form{
 flex-direction: column; 
 }
 }
+
+.description {
+  margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .description {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .description {
+    margin-left: 0;
+  }
+}

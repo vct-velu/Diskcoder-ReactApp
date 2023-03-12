@@ -10,72 +10,65 @@ const ProductItem = function (props) {
     const [userInput, setUserInput] = useState({
         name: '',
         price: '',
-        description: ''
+        description: '',
+        image: ''
     });
 
     // Handle Edit Product
     const editHandler = (event) => {
         setEditWindow(true);
         setshowButton(false);
-        setUserInput({ name: props.name, price: props.price, description: props.description });
+
+        setUserInput({ name: props.name, price: props.price, description: props.description, image: file });
 
     }
 
     // Handle User Inputs:
     const handleNameChange = (event) => {
-        // setProductName(event.target.value);
         setUserInput((prevState) => { return { ...prevState, name: event.target.value }; });
     };
 
     const handlePriceChange = (event) => {
-        // setProductPrice(event.target.value);
         setUserInput((prevState) => { return { ...prevState, price: event.target.value }; });
-
     };
 
     const handleDescChange = (event) => {
-        // setProductDescription(event.target.value);
         setUserInput((prevState) => { return { ...prevState, description: event.target.value }; });
-
     };
 
     const handleImageChange = (event) => {
-        setImage(event.target.files[0]);
-        // setUserInput((prevState)=>{ return{ ...prevState, productImage: event.target.files[0] }; });
-
+        setUserInput((prevState) => { return { ...prevState, image: event.target.files[0] }; });
     };
 
     //Handle Edit Product Submit
     const handleSubmit = (event) => {
+        // console.log(userInput)
         event.preventDefault();
 
-        if (image != '') {
-            setEditWindow(false);
-            setshowButton(true);
-            const formData = new FormData();
-            formData.append('name', userInput.name);
-            formData.append('price', userInput.price);
-            formData.append('image', image);
-            formData.append('description', userInput.description);
+        setEditWindow(false);
+        setshowButton(true);
+        const formData = new FormData();
+        formData.append('name', userInput.name);
+        formData.append('price', userInput.price);
+        formData.append('image', userInput.image);
+        formData.append('description', userInput.description);
 
-            console.log("FormData : ", formData);
 
-            axios.defaults.baseURL = 'http://localhost:4000';
+        console.log("FormData : ", formData);
 
-            axios.put(`/api/product/edit/${props.id}`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+        axios.defaults.baseURL = 'http://localhost:4000';
+
+        axios.put(`/api/product/edit/${props.id}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+            .then(response => {
+                console.log("Edited Product : ", response.data.updatedProduct);
+                props.onEditProduct(response.data.updatedProduct);
+                setUserInput({ productName: '', productPrice: '', productDescription: '', });
+                window.alert("Product Edited Successfully!")
+
             })
-                .then(response => {
-                    console.log("Edited Product : ", response.data.updatedProduct);
-                    props.onEditProduct(response.data.updatedProduct);
-                    // setUserInput({ productName: '', productPrice: '', productDescription: '', });
-                    window.alert("Product Edited Successfully!")
-
-                })
-                .catch(error => { console.log(error); });
-        } else {
-            window.alert("Upload Image")
-        }
+            .catch(error => { console.log(error); });
     };
 
     // Handle Cancel Edit Product
@@ -152,9 +145,6 @@ const ProductItem = function (props) {
                 : null
             }
         </>
-
-
-
     );
 
 }
