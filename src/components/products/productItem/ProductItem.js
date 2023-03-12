@@ -19,7 +19,7 @@ const ProductItem = function (props) {
         setEditWindow(true);
         setshowButton(false);
 
-        setUserInput({ name: props.name, price: props.price, description: props.description, image: file });
+        setUserInput({ name: props.name, price: props.price, description: props.description, image: props.image });
 
     }
 
