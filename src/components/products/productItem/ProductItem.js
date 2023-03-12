@@ -2,11 +2,12 @@ import './ProductItem.css'
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ProductItem = function (props) {
 
     const [editWindow, setEditWindow] = useState(false);
     const [showButton, setshowButton] = useState(true);
-    const [image, setImage] = useState('');
     const [userInput, setUserInput] = useState({
         name: '',
         price: '',
@@ -65,7 +66,17 @@ const ProductItem = function (props) {
                 console.log("Edited Product : ", response.data.updatedProduct);
                 props.onEditProduct(response.data.updatedProduct);
                 setUserInput({ productName: '', productPrice: '', productDescription: '', });
-                window.alert("Product Edited Successfully!")
+                //    window.alert("Product Edited Successfully!")
+                toast.success('Product Edited Successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
 
             })
             .catch(error => { console.log(error); });
@@ -89,7 +100,16 @@ const ProductItem = function (props) {
                 .then(response => {
                     console.log("Deleted Data :", response.data);
                     props.onDeleteProduct(props.id);
-
+                    toast.success('Product Deleted Successfully!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 })
                 .catch(error => { console.log(error); });
         }
@@ -138,6 +158,8 @@ const ProductItem = function (props) {
                             <div className='edit-product-action'>
                                 <button className='button' onClick={cancelEdit}> Cancel </button>
                                 <button className='button' type="submit" > Submit </button>
+                                <ToastContainer />
+
                             </div>
                         </div>
                     </form>

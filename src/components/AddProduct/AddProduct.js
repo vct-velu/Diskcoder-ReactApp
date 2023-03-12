@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './AddProduct.css'
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const AddProduct = function (props) {
 
@@ -49,7 +52,17 @@ const AddProduct = function (props) {
                 console.log("Added Product : ", response.data.product);
                 props.addProductHandler(response.data.product);
                 setUserInput({ productName: '', productPrice: '', productDescription: '', });
-                window.alert("Product Added Successfully!")
+                // window.alert("Product Added Successfully!")
+                toast.success('Product Added Successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
 
             })
             .catch(error => { console.log(error); });
@@ -84,6 +97,7 @@ const AddProduct = function (props) {
                     </div>
                 </div>
             </form>
+            <ToastContainer />
         </div>
 
     );
